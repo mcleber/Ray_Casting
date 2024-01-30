@@ -1,8 +1,8 @@
 /**
  * @file    map.hpp
  *
- * @brief   Cria o map onde será realizado os testes.
- *          Controla o tamanho das células.
+ * @brief   Creates the map where the tests will be carried out.
+*           Controls cell size.
 */
 
 #pragma once
@@ -16,7 +16,6 @@ class Map
 {
 public:
     Map(float cellSize, int width, int height);
-    //Map(float cellSize, const std::vector<std::vector<int>> &grid);
     Map(float cellSize, const std::string &filename);
 
     void draw(sf::RenderTarget &target);
