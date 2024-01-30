@@ -1,7 +1,7 @@
 /**
  * @file   constants.hpp
  *
- * @brief  Reune fórmulas, constantes e variáveis executadas em tempo de compilação.
+ * @brief  Formulas, constants and variables executed at compile time.
  */
 
 #pragma once
@@ -24,7 +24,7 @@ constexpr float SCREEN_W {1024.0f};
 
 constexpr float SCREEN_H {768.0f};
 
-constexpr size_t NUM_RAYS {600}; // Se usar um número maior (ex. 1200), cria smooth nas paredes
+constexpr size_t NUM_RAYS {600}; // Large numbers (e.g. 1200) create smooth walls.
 
 constexpr float COLUMN_WIDTH {SCREEN_W / (float)NUM_RAYS};
 

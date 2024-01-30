@@ -1,7 +1,7 @@
 /**
  * @file    renderer.cpp
  *
- * @brief   Cria a versão "3D" do mapa.
+ * @brief   Creates the "3D" version of the map.
 */
 
 #include <cmath>
@@ -43,7 +43,7 @@ void Renderer::init()
 
 void Renderer::draw3DView(sf::RenderTarget &target, const Player &player, const Map &map)
 {
-    // Cria o chão e o céu
+    /// Creates the ground and the sky
     sf::RectangleShape rectangle(sf::Vector2f(SCREEN_W, SCREEN_H / 2.0f));
     rectangle.setFillColor(sf::Color(100, 170, 250)); // Céu
     target.draw(rectangle);
@@ -108,7 +108,7 @@ void Renderer::draw3DView(sf::RenderTarget &target, const Player &player, const 
 
             float shade = (ray.isHitVertical ? 0.8f : 1.0f) * brightness;
 
-            // FOG
+            /// FOG
             float fogPercentage = (ray.distance / maxFogDistance);
             if (fogPercentage > 1.0f)
             {

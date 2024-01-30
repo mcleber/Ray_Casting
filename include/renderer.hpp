@@ -1,8 +1,8 @@
 /**
  * @file   renderer.hpp
  *
- * @brief  Cria a classe Renderer.
- *         Método para desenhar as linhas de raios e visualização "3D".
+ * @brief  Creates the Renderer class.
+ *         Method for drawing ray lines and "3D" visualization.
  */
 
 #pragma once

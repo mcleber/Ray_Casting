@@ -1,8 +1,8 @@
 /**
  * @file    player.hpp
  *
- * @brief   Cria o player e os controles via teclado.
- *          Adiciona os métodos draw e update.
+ * @brief   Creates the player and controls via keyboard.
+ *          Adds draw and update methods.
 */
 
 #pragma once

@@ -1,8 +1,8 @@
 /**
  * @file    player.cpp
  *
- * @brief   Cria o controle para o jogador.
- *          Implementa as classes Draw e Update.
+ * @brief   Creates control for the player.
+ *          Implements the Draw and Update classes.
 */
 
 #include <cmath>
