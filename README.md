@@ -1,5 +1,5 @@
 # Ray Casting in C++ and SFML
 
-Based on Raycaster in C++ from "The Hello World Guy" channel on Youtube.
+Based on Raycaster in C++ from the YouTube channel "The Hello World Guy".
 
 This repository is under development...
