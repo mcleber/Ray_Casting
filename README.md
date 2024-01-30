@@ -1,4 +1,4 @@
-# Ray Casting with C++ and SFML
+# Ray Casting
 
 Based on the Raycaster from "The Hello World Guy" YouTube channel.
 
