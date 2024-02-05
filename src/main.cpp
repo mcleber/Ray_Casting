@@ -9,7 +9,6 @@
  * @version 1.0
  *
  * Licensed under MIT License
- *
 */
 
 #include <SFML/Graphics.hpp>
@@ -57,7 +56,6 @@ int main()
             }
         }
 
-
         player.update(deltaTime);
 
         window.clear();
@@ -66,7 +64,7 @@ int main()
 
         window.display();
 
-    } // FIM LOOP WHILE
+    } // END LOOP WHILE
 
     return 0;
 }

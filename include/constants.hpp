@@ -2,7 +2,7 @@
  * @file   constants.hpp
  *
  * @brief  Formulas, constants and variables executed at compile time.
- */
+*/
 
 #pragma once
 
@@ -18,7 +18,7 @@ constexpr size_t MAX_RAYCASTING_STEPS {16};
 
 constexpr size_t MAX_RAYCASTING_DEPTH {64};
 
-constexpr float PLAYER_FOV {60.f};
+constexpr float PLAYER_FOV {60.0f};
 
 constexpr float SCREEN_W {1024.0f};
 

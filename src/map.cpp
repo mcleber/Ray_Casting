@@ -2,8 +2,7 @@
  * @file    map.cpp
  *
  * @brief   Creates the grid for the map.
- *
- */
+*/
 
 #include "../include/map.hpp"
 
@@ -37,8 +36,7 @@ Map::Map(float cellSize, const std::string &filename) : cellSize(cellSize)
 
 }
 
-      /// Create the map grid
-
+    /// Create the map grid
 void Map::draw(sf::RenderTarget &target)
 {
     if (grid.empty())

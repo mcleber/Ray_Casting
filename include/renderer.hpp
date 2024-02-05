@@ -3,7 +3,7 @@
  *
  * @brief  Creates the Renderer class.
  *         Method for drawing ray lines and "3D" visualization.
- */
+*/
 
 #pragma once
 
@@ -21,8 +21,6 @@ public:
     void init();
 
     void draw3DView(sf::RenderTarget &target, const Player &player, const Map &map);
-
-    void drawRays(sf::RenderTarget &target, const Player &player, const Map &map);
 
 private:
     sf::Texture  wallTexture;

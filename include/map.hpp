@@ -2,7 +2,7 @@
  * @file    map.hpp
  *
  * @brief   Creates the map where the tests will be carried out.
-*           Controls cell size.
+ *          Controls cell size.
 */
 
 #pragma once

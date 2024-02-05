@@ -17,7 +17,7 @@ void Player::draw(sf::RenderTarget &target)
     circle.setPosition(position);
     circle.setFillColor(sf::Color::Yellow);
 
-    sf::RectangleShape line(sf::Vector2f(24.f, 2.f));
+    sf::RectangleShape line(sf::Vector2f(24.0f, 2.0f));
     line.setPosition(position);
     line.setRotation(angle);
     line.setFillColor(sf::Color::Yellow);
