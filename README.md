@@ -5,4 +5,4 @@ Based on Raycaster in C++ from the YouTube channel "The Hello World Guy".
 ## Run on Linux
 
 - Clone the repository;
-- Type '''make''' in the terminal.
+- Type ```make``` in the terminal.
