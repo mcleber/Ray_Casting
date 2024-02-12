@@ -4,8 +4,8 @@ CXX_STANDARD = c++23
 # Define the compiler to be used
 CXX = g++
 
-# Define the compiler options
-CXXFLAGS = -std=$(CXX_STANDARD) -Wall -Wextra -Wpedantic -MP -MMD -g
+# Define the compiler options (-O3 Compiler Optimization)
+CXXFLAGS = -std=$(CXX_STANDARD) -Wall -Wextra -Wpedantic -MP -MMD -O3 -g
 
 # Libraries to link
 LIBS = -lsfml-graphics -lsfml-window -lsfml-system
