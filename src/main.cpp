@@ -2,7 +2,7 @@
  * @file    main.cpp
  *
  * @brief   Create a basic raycaster renderer in C++ using the SFML library.
- *          Based on the Raycaster from "The Hello World Guy" YouTube channel.
+ *          Raycaster tutorial from YouTube channel "The Hello World Guy".
  *
  * @author
  * @date    2023/12/28
@@ -22,7 +22,7 @@ int main()
 {
     /// Initial window settings
     sf::RenderWindow window(sf::VideoMode(SCREEN_W, SCREEN_H), "Ray Casting - 1.0",
-        sf::Style::Titlebar | sf::Style::Close);
+                            sf::Style::Titlebar | sf::Style::Close);
 
     /// Adjust window position when running
     window.setPosition(sf::Vector2i(0, 0));
@@ -59,10 +59,11 @@ int main()
         player.update(deltaTime);
 
         window.clear();
-
         renderer.draw3DView(window, player, map);
-
         window.display();
+
+        // Frame rate (this line overwrites the Title in the Initial window settings)
+        window.setTitle("Raycaster - v.1.0 | FrameRate: " + std::to_string(1.0f / deltaTime));
 
     } // END LOOP WHILE
 

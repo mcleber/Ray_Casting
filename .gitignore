@@ -76,13 +76,10 @@ latex/
 *.user
 *.userosscache
 *.sln.docstates
-
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
-
 # Mono auto generated files
 mono_crash.*
-
 # Build results
 [Dd]ebug/
 [Dd]ebugPublic/
@@ -98,7 +95,6 @@ bld/
 [Oo]bj/
 [Ll]og/
 [Ll]ogs/
-
 # Files built by Visual Studio
 *_i.c
 *_p.c
@@ -124,10 +120,8 @@ bld/
 *.pidb
 *.svclog
 *.scc
-
 # Chutzpah Test files
 _Chutzpah*
-
 # Visual C++ cache files
 ipch/
 *.aps
@@ -138,12 +132,10 @@ ipch/
 *.cachefile
 *.VC.db
 *.VC.VC.opendb
-
 # Visual Studio profiler
 *.psess
 *.vsp
 *.vspx
 *.sap
-
 # Visual Studio Trace Files
 *.e2e

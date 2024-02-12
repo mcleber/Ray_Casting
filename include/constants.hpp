@@ -24,6 +24,8 @@ constexpr float SCREEN_W {1024.0f};
 
 constexpr float SCREEN_H {768.0f};
 
+constexpr float CAMERA_Z {0.5f * SCREEN_H};
+
 constexpr size_t NUM_RAYS {600}; // Large numbers (e.g. 1200) create smooth walls.
 
 constexpr float COLUMN_WIDTH {SCREEN_W / (float)NUM_RAYS};
