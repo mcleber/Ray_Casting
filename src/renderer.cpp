@@ -2,7 +2,9 @@
  * @file    renderer.cpp
  *
  * @brief   Creates the "3D" version of the map.
-*/
+ *          DDA (Digital Differential Analyzer) algorithm seamlessly
+ *          work with textured and shaded walls.
+ */
 
 #include <cmath>
 #include <cstddef>
@@ -19,7 +21,7 @@ struct Ray
     bool isHitVertical;
 };
 
-//static Ray castRay(sf::Vector2f start, float angleInDegrees, const Map &map);
+// static Ray castRay(sf::Vector2f start, float angleInDegrees, const Map &map);
 
 void Renderer::init()
 {
@@ -52,12 +54,10 @@ void Renderer::draw3DView(sf::RenderTarget &target, const Player &player, const 
     target.draw(rectangle);
 
     const sf::Color fogColor = sf::Color(100, 170, 250);
-    const float maxRenderDistance = MAX_RAYCASTING_DEPTH * map.getCellSize();
-    const float maxFogDistance = maxRenderDistance / 4.0f;
 
     float radians = player.angle * PI / 180.0f;
-    sf::Vector2f directions{std::cos(radians),std::sin(radians)};
-    sf::Vector2f plane{-directions.y, directions.x}; //plane camera
+    sf::Vector2f directions{std::cos(radians), std::sin(radians)};
+    sf::Vector2f plane{-directions.y, directions.x}; // plane camera
 
     sf::VertexArray walls{sf::Lines};
 
@@ -78,7 +78,8 @@ void Renderer::draw3DView(sf::RenderTarget &target, const Player &player, const 
         {
             step.x = -1;
             sideDist.x = (-mapPos.x + rayPos.x) * deltaDist.x;
-        } else
+        }
+        else
         {
             step.x = 1;
             sideDist.x = (mapPos.x - rayPos.x + 1.0f) * deltaDist.x;
@@ -124,15 +125,37 @@ void Renderer::draw3DView(sf::RenderTarget &target, const Player &player, const 
             depth++;
         }
 
-        float perpWallDist = isHitVertical ? sideDist.y - deltaDist.y : sideDist.x - deltaDist.x;
-        float wallHeight = SCREEN_H / perpWallDist;
+        if (didHit)
+        {
+            float perpWallDist = isHitVertical ? sideDist.y - deltaDist.y : sideDist.x - deltaDist.x;
+            float wallHeight = SCREEN_H / perpWallDist;
 
-        float wallStart = (-wallHeight + SCREEN_H) / 2.0f;
-        float wallEnd = (wallHeight + SCREEN_H) / 2.0f;
+            float wallStart = (-wallHeight + SCREEN_H) / 2.0f;
+            float wallEnd = (wallHeight + SCREEN_H) / 2.0f;
 
-        walls.append(sf::Vertex(sf::Vector2f((float)i, wallStart)));
-        walls.append(sf::Vertex(sf::Vector2f((float)i, wallEnd)));
+            float textureSize = wallTexture.getSize().x;
+
+            float wallX = isHitVertical ? rayPos.x + perpWallDist * rayDir.x
+                                        : rayPos.y + perpWallDist * rayDir.y;
+
+            wallX -= std::floor(wallX);
+            float textureX = wallX * textureSize;
+
+            float brightness = 1.0f - (perpWallDist / (float)MAX_RAYCASTING_DEPTH);
+            if (isHitVertical)
+            {
+                brightness *= 0.7f;
+            }
+
+            sf::Color color = sf:: Color(255 * brightness, 255 * brightness, 255 * brightness);
+
+            walls.append(sf::Vertex(sf::Vector2f((float)i, wallStart), color,
+                                    sf::Vector2f(textureX, 0.0f)));
+            walls.append(sf::Vertex(sf::Vector2f((float)i, wallEnd), color,
+                                    sf::Vector2f(textureX, textureSize)));
+        }
     }
 
-    target.draw(walls);
+    sf::RenderStates states{&wallTexture};
+    target.draw(walls, states);
 }

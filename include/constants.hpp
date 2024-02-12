@@ -12,7 +12,7 @@ constexpr float PI {3.141592653589793f};
 
 constexpr float TURN_SPEED {120.0f};
 
-constexpr float MOVE_SPEED {100.0f};
+constexpr float MOVE_SPEED {120.0f};
 
 constexpr size_t MAX_RAYCASTING_STEPS {16};
 
