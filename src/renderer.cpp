@@ -23,6 +23,12 @@ struct Ray
 
 void Renderer::init()
 {
+    if (!skyTexture.loadFromFile("./image/sky_texture.png"))
+    {
+        std::cerr << "Failed to load sky_texture,png" << std::endl;
+    }
+    skyTexture.setRepeated(true);
+
     if (!wallTexture.loadFromFile("./image/wall_texture.png"))
     {
         std::cerr << "Failed to load wall_texture.png" << std::endl;
@@ -47,15 +53,30 @@ void Renderer::init()
 
 void Renderer::draw3DView(sf::RenderTarget &target, const Player &player, const Map &map)
 {
-    /// Creates the ground and the sky
-    sf::RectangleShape rectangle(sf::Vector2f(SCREEN_W, SCREEN_H / 2.0f));
-    rectangle.setFillColor(sf::Color(100, 170, 250)); // Céu
-    target.draw(rectangle);
-
     float radians = player.angle * PI / 180.0f;
     sf::Vector2f directions{std::cos(radians), std::sin(radians)};
     sf::Vector2f plane{-directions.y, directions.x * 0.66f}; // plane camera
     sf::Vector2f position = player.position / map.getCellSize();
+
+    // Sky
+    int xOffset = SCREEN_W / PLAYER_TURN_SPEED * player.angle;
+    while (xOffset < 0)
+    {
+        xOffset += skyTexture.getSize().x;
+    }
+    sf::Vertex sky[] =
+    {
+        // 4 Vertex
+        sf::Vertex(sf::Vector2f(0.0f, 0.0f), sf::Vector2f(xOffset, 0.0f)),
+        sf::Vertex(sf::Vector2f(0.0f, SCREEN_H),
+                   sf::Vector2f(xOffset, skyTexture.getSize().y)),
+        sf::Vertex(sf::Vector2f(SCREEN_W, SCREEN_H),
+                   sf::Vector2f(xOffset + skyTexture.getSize().x,
+                                skyTexture.getSize().y)),
+        sf::Vertex(sf::Vector2f(SCREEN_W, 0.0f),
+                   sf::Vector2f(xOffset + skyTexture.getSize().x, 0.0f)),
+    };
+    target.draw(sky, 4, sf::Quads, sf::RenderStates(&skyTexture));
 
     // Floor
     uint8_t floorPixels[(size_t)SCREEN_W * (size_t)SCREEN_H * 4]{}; // *4 -> 4 bytes (RGBA)

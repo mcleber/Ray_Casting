@@ -20,6 +20,8 @@ constexpr size_t MAX_RAYCASTING_DEPTH {64};
 
 constexpr float PLAYER_FOV {60.0f};
 
+constexpr float PLAYER_TURN_SPEED {100.0f};
+
 constexpr float SCREEN_W {1024.0f};
 
 constexpr float SCREEN_H {768.0f};

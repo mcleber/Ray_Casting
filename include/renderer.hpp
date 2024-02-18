@@ -23,6 +23,6 @@ public:
     void draw3DView(sf::RenderTarget &target, const Player &player, const Map &map);
 
 private:
-    sf::Texture  wallTexture;
+    sf::Texture  wallTexture, skyTexture;
     sf::Image floorImage;
 };
