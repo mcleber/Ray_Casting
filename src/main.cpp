@@ -13,6 +13,7 @@
 
 #include <SFML/Graphics.hpp>
 
+#include "../include/editor.hpp"
 #include "../include/map.hpp"
 #include "../include/player.hpp"
 #include "../include/renderer.hpp"
@@ -24,7 +25,7 @@ int main()
     sf::RenderWindow window(sf::VideoMode(SCREEN_W, SCREEN_H), "Ray Casting - 1.0",
                             sf::Style::Titlebar | sf::Style::Close);
 
-    //window.setVerticalSyncEnabled(true); // limits the frame rate to 60 fps.
+    //window.setVerticalSyncEnabled(true); // limits the frame rate to 60 fps
 
     // Adjust window position when running
     window.setPosition(sf::Vector2i(0, 0));
@@ -41,6 +42,10 @@ int main()
 
     Renderer renderer;
     renderer.init();
+
+    // Map Editor
+    Editor editor{};
+    editor.init(window);
 
     // Game Editor
     enum class State { Editor, Game} state = State::Game;
@@ -63,23 +68,30 @@ int main()
             {
                 state = state == State::Game ? State::Editor : State::Game;
             }
+
+            // Zoom
+            if (state == State::Editor)
+            {
+                editor.handleEvent(event);
+            }
         }
 
         window.clear();
         if (state == State::Game)
         {
+            window.setView(window.getDefaultView());
             player.update(deltaTime);
             renderer.draw3DView(window, player, map);
         }
         else
         {
-            // Draw 2D map
-            map.draw(window);
+            editor.run(window);
+            map.draw(window);  // Draw 2D map
         }
 
         window.display();
 
-        // Frame rate (this line overwrites the Title in the Initial window settings)
+        // Frame rate (this line overwrites the Title in the Initial window settings).
         window.setTitle("Raycaster - v.1.0 | FrameRate: " + std::to_string(1.0f / deltaTime));
 
     } // END LOOP WHILE
