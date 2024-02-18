@@ -23,6 +23,10 @@ struct Ray
 
 void Renderer::init()
 {
+    // Floor texture
+    floorBuffer.create(SCREEN_W, SCREEN_H);
+    floorBufferSprite.setTexture(floorBuffer);
+
     if (!skyTexture.loadFromFile("./image/sky_texture.png"))
     {
         std::cerr << "Failed to load sky_texture,png" << std::endl;
@@ -88,7 +92,6 @@ void Renderer::draw3DView(sf::RenderTarget &target, const Player &player, const 
 
         // Linear interpolation
         sf::Vector2f floorStep = rowDistance *  (rayDirRight - rayDirLeft) / SCREEN_W;
-
         sf::Vector2f floor = position + rowDistance * rayDirLeft;
 
         for (size_t x = 0; x < SCREEN_W; x++)
@@ -111,13 +114,10 @@ void Renderer::draw3DView(sf::RenderTarget &target, const Player &player, const 
         }
     }
 
-    sf::Image image;
-    image.create(SCREEN_W, SCREEN_H, floorPixels);
-    sf::Texture texture;
-    texture.loadFromImage(image);
-    sf::Sprite sprite{texture};
-    target.draw(sprite);
+    floorBuffer.update(floorPixels);
+    target.draw(floorBufferSprite);
 
+    // Wall
     sf::VertexArray walls{sf::Lines};
     for (size_t i = 0; i < SCREEN_W; i++)
     {
@@ -175,7 +175,7 @@ void Renderer::draw3DView(sf::RenderTarget &target, const Player &player, const 
             const auto &grid = map.getGrid();
 
             if (x >= 0 && y < grid.size() && x >= 0 && x < grid[y].size() &&
-                grid[y][x] != sf::Color::Black)
+                grid[y][x])
             {
                 didHit = true;
             }
