@@ -22,4 +22,4 @@ Based on the Raycaster in C++ from The Hello World Guy YouTube channel.
 
 **Edit the Map:**
 - Left-click to add walls.
-- To remove walls press the left Shift key and click the left mouse button.
+- To remove walls press the left Shift key and the left mouse button.
