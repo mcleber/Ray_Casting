@@ -85,8 +85,9 @@ int main()
         }
         else
         {
-            editor.run(window);
+
             map.draw(window);  // Draw 2D map
+            editor.run(window, map);
         }
 
         window.display();
