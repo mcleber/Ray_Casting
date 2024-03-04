@@ -7,8 +7,9 @@ CXX = g++
 # Define the compiler options (-O3 Compiler Optimization)
 CXXFLAGS = -std=$(CXX_STANDARD) -Wall -Wextra -Wpedantic -MP -MMD -O3 -g
 
-# Libraries to link
-LIBS = -lsfml-graphics -lsfml-window -lsfml-system
+
+# Libraries to link (-lGL for DearImgUI)
+LIBS = -lsfml-graphics -lsfml-window -lsfml-system -lGL
 
 # Name of the executable
 EXECUTABLE = raycasting

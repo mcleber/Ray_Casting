@@ -13,6 +13,9 @@
 
 #include <SFML/Graphics.hpp>
 
+#include "../include/imgui-SFML.h"
+#include "../include/imgui.h"
+
 #include "../include/editor.hpp"
 #include "../include/map.hpp"
 #include "../include/player.hpp"
@@ -25,13 +28,20 @@ int main()
     sf::RenderWindow window(sf::VideoMode(SCREEN_W, SCREEN_H), "Ray Casting - 1.0",
                             sf::Style::Titlebar | sf::Style::Close);
 
-    //window.setVerticalSyncEnabled(true); // limits the frame rate to 60 fps
+    window.setVerticalSyncEnabled(true); // limits the frame rate to 60 fps
+
+    // Check ImGUI- SFML
+    if (!ImGui::SFML::Init(window))
+    {
+        std::cerr << "Failed to init ImGui" << std::endl;
+        return 1;
+    }
 
     // Adjust window position when running
     window.setPosition(sf::Vector2i(0, 0));
 
     // Speed control (in fps)
-    window.setFramerateLimit(60);
+    //window.setFramerateLimit(60);
 
     // Creates the Map object and loads texture
     Map map(48.f, "./image/map.png");
@@ -54,7 +64,8 @@ int main()
     // LOOP WHILE
     while (window.isOpen())
     {
-        float deltaTime = gameGlock.restart().asSeconds();
+        sf::Time deltaTime = gameGlock.restart();
+        ImGui::SFML::Update(window, deltaTime);
 
         sf:: Event event;
         while (window.pollEvent(event))
@@ -74,13 +85,17 @@ int main()
             {
                 editor.handleEvent(event);
             }
+
+            ImGui::SFML::ProcessEvent(window, event);
         }
+
+        ImGui::ShowDemoWindow();
 
         window.clear();
         if (state == State::Game)
         {
             window.setView(window.getDefaultView());
-            player.update(deltaTime);
+            player.update(deltaTime.asSeconds());
             renderer.draw3DView(window, player, map);
         }
         else
@@ -90,12 +105,15 @@ int main()
             editor.run(window, map);
         }
 
+        ImGui::SFML::Render(window);
         window.display();
 
         // Frame rate (this line overwrites the Title in the Initial window settings).
-        window.setTitle("Raycaster - v.1.0 | FrameRate: " + std::to_string(1.0f / deltaTime));
+        window.setTitle("Raycaster - v.1.0 | FrameRate: " + std::to_string(1.0f / deltaTime.asSeconds()));
 
     } // END LOOP WHILE
+
+    ImGui::SFML::Shutdown();
 
     return 0;
 }
