@@ -42,7 +42,7 @@ int main()
     // Speed control (in fps)
     //window.setFramerateLimit(60);
 
-    // Creates the Map object and loads texture
+    // Creates the Map object and load edited map
     Map map {48.0f};
     map.load("test.map");
 
