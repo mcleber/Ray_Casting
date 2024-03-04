@@ -14,7 +14,6 @@
 #include <SFML/Graphics.hpp>
 
 #include "../include/imgui-SFML.h"
-#include "../include/imgui.h"
 
 #include "../include/editor.hpp"
 #include "../include/map.hpp"
@@ -44,7 +43,8 @@ int main()
     //window.setFramerateLimit(60);
 
     // Creates the Map object and loads texture
-    Map map(48.f, "./image/map.png");
+    Map map {48.0f};
+    map.load("test.map");
 
     // Creates the Player object
     Player player;
@@ -88,8 +88,6 @@ int main()
 
             ImGui::SFML::ProcessEvent(window, event);
         }
-
-        ImGui::ShowDemoWindow();
 
         window.clear();
         if (state == State::Game)
