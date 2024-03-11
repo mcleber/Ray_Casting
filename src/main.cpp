@@ -11,14 +11,18 @@
  * Licensed under MIT License
 */
 
+#include <iostream>
+
 #include <SFML/Graphics.hpp>
+
+#include "../include/editor.hpp"
 
 #include "../include/imgui-SFML.h"
 
-#include "../include/editor.hpp"
 #include "../include/map.hpp"
 #include "../include/player.hpp"
 #include "../include/renderer.hpp"
+#include "../include/resources.hpp"
 
 
 int main()
@@ -45,6 +49,12 @@ int main()
     // Creates the Map object and load edited map
     Map map {48.0f};
     map.load("test.map");
+
+    // Load Wall Textures
+    if (!Resources::wallTexture.loadFromFile("./image/textures.png"))
+    {
+        std::cerr << "Failed to load textures.png" << std::endl;
+    }
 
     // Creates the Player object
     Player player;

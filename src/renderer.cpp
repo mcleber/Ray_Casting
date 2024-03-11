@@ -6,18 +6,20 @@
  *          work with textured and shaded walls.
  */
 
+#include "../include/renderer.hpp"
+#include "../include/resources.hpp"
+
+
+#include <iostream>
 #include <cmath>
 #include <cstddef>
 #include <algorithm>
-
-#include "../include/renderer.hpp"
 
 struct Ray
 {
     sf::Vector2f hitPosition;
     sf::Vector2u mapPosition;
     float distance;
-    bool hit;
     bool isHitVertical;
 };
 
@@ -32,16 +34,6 @@ void Renderer::init()
         std::cerr << "Failed to load sky_texture,png" << std::endl;
     }
     skyTexture.setRepeated(true);
-
-    if (!wallTexture.loadFromFile("./image/wall_texture.png"))
-    {
-        std::cerr << "Failed to load wall_texture.png" << std::endl;
-    }
-
-    if (wallTexture.getSize().x != wallTexture.getSize().y)
-    {
-        std::cerr << "ERROR: Texture is not square" << std::endl;
-    }
 
     if (!floorImage.loadFromFile("./image/floor_texture.png"))
     {
@@ -154,9 +146,9 @@ void Renderer::draw3DView(sf::RenderTarget &target, const Player &player, const 
             sideDist.y = (mapPos.y - rayPos.y + 1.0f) * deltaDist.y;
         }
 
-        bool didHit{}, isHitVertical{};
+        int hit{}, isHitVertical{};
         size_t depth = 0;
-        while (!didHit && depth < MAX_RAYCASTING_DEPTH)
+        while (hit == 0 && depth < MAX_RAYCASTING_DEPTH)
         {
             if (sideDist.x < sideDist.y)
             {
@@ -174,16 +166,15 @@ void Renderer::draw3DView(sf::RenderTarget &target, const Player &player, const 
             int x = mapPos.x, y = mapPos.y;
             const auto &grid = map.getGrid();
 
-            if (x >= 0 && y < grid.size() && x >= 0 && x < grid[y].size() &&
-                grid[y][x])
+            if (y >= 0 && y < grid.size() && x >= 0 && x < grid[y].size())
             {
-                didHit = true;
+                hit = grid[y][x];
             }
 
             depth++;
         }
 
-        if (didHit)
+        if (hit > 0)
         {
             float perpWallDist = isHitVertical ? sideDist.y - deltaDist.y : sideDist.x - deltaDist.x;
             float wallHeight = SCREEN_H / perpWallDist;
@@ -191,7 +182,8 @@ void Renderer::draw3DView(sf::RenderTarget &target, const Player &player, const 
             float wallStart = (-wallHeight + SCREEN_H) / 2.0f;
             float wallEnd = (wallHeight + SCREEN_H) / 2.0f;
 
-            float textureSize = wallTexture.getSize().x;
+            // Wall textures
+            float textureSize = Resources::wallTexture.getSize().y;
 
             float wallX = isHitVertical ? rayPos.x + perpWallDist * rayDir.x
                                         : rayPos.y + perpWallDist * rayDir.y;
@@ -205,16 +197,16 @@ void Renderer::draw3DView(sf::RenderTarget &target, const Player &player, const 
                 brightness *= 0.7f;
             }
 
-            sf::Color color = sf:: Color(255 * brightness, 255 * brightness, 255 * brightness);
+            sf::Color color = sf::Color(255 * brightness, 255 * brightness, 255 * brightness);
 
             walls.append(sf::Vertex(sf::Vector2f((float)i, wallStart), color,
-                                    sf::Vector2f(textureX, 0.0f)));
+                            sf::Vector2f(textureX + (hit - 1) * textureSize, 0.0f)));
             walls.append(sf::Vertex(sf::Vector2f((float)i, wallEnd), color,
-                                    sf::Vector2f(textureX, textureSize)));
+                            sf::Vector2f(textureX + (hit - 1) * textureSize, textureSize)));
         }
     }
 
-    sf::RenderStates states{&wallTexture};
+    sf::RenderStates states{&Resources::wallTexture};
     target.draw(walls, states);
 
 }

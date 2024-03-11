@@ -5,9 +5,12 @@
 */
 
 #include "../include/editor.hpp"
-#include "../include/map.hpp"
 
+#include "../include/imgui-SFML.h"
 #include "../include/imgui.h"
+
+#include "../include/map.hpp"
+#include "../include/resources.hpp"
 
 #include <SFML/Graphics.hpp>
 
@@ -35,6 +38,23 @@ void Editor::run(sf::RenderWindow &window, Map &map)
 
         ImGui::EndMainMenuBar();
     } // END ImGui MENU
+
+    // ImGui Editing Options
+    ImGui::Begin("Editing Options");
+    ImGui::Text("Texture No.: "); // Texture Number
+    ImGui::InputInt("##tex_no", &textureNumber);
+
+    int textureSize = Resources::wallTexture.getSize().y;
+    ImGui::Text("Preview: ");
+    ImGui::Image(
+        sf::Sprite
+        {
+            Resources::wallTexture,
+            sf::IntRect(textureNumber * textureSize, 0, textureSize, textureSize),
+        },
+        sf::Vector2f(100.0f, 100.0f));
+
+    ImGui::End(); //END ImGUI Editing Options
 
     sf::Vector2i mousePos = sf::Mouse::getPosition(window);
 
@@ -72,7 +92,7 @@ void Editor::run(sf::RenderWindow &window, Map &map)
         if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
         {
             map.setMapCell(mapPos.x, mapPos.y,
-                        sf::Keyboard::isKeyPressed(sf::Keyboard::LShift) ? 0 : 1);
+                        sf::Keyboard::isKeyPressed(sf::Keyboard::LShift) ? 0 : textureNumber + 1);
         }
     }
 

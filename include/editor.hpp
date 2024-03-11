@@ -23,4 +23,5 @@ class Editor
         bool isFirstMouse{}; // Capture the mouse.
         sf::Vector2i lastMousePos;
         sf::View view;
+        int textureNumber;
 };

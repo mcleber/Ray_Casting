@@ -7,23 +7,20 @@
 
 #pragma once
 
-#include <iostream>
-
 #include <SFML/Graphics.hpp>
 
-#include "constants.hpp"
-#include "map.hpp"
 #include "player.hpp"
+#include "map.hpp"
+#include "constants.hpp"
 
 class Renderer
 {
 public:
     void init();
-
     void draw3DView(sf::RenderTarget &target, const Player &player, const Map &map);
 
 private:
-    sf::Texture  wallTexture, skyTexture;
+    sf::Texture skyTexture;
     sf::Image floorImage;
 
     sf::Texture floorBuffer;
