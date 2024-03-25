@@ -26,4 +26,5 @@ class Editor
         sf::Vector2i lastMousePos;
         sf::View view;
         int textureNumber;
+        int currentLayer;
 };

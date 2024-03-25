@@ -163,14 +163,7 @@ void Renderer::draw3DView(sf::RenderTarget &target, const Player &player, const 
                 isHitVertical = true;
             }
 
-            int x = mapPos.x, y = mapPos.y;
-            const auto &grid = map.getGrid();
-
-            if (y >= 0 && y < grid.size() && x >= 0 && x < grid[y].size())
-            {
-                hit = grid[y][x];
-            }
-
+            hit = map.getMapCell(mapPos.x, mapPos.y, Map::LAYER_WALLS);
             depth++;
         }
 

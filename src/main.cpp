@@ -108,7 +108,7 @@ int main()
         else
         {
 
-            map.draw(window);  // Draw 2D map
+            //map.draw(window);  // Draw 2D map
             editor.run(window, map);
         }
 

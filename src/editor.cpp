@@ -5,18 +5,18 @@
 */
 
 #include "../include/editor.hpp"
+#include "../include/map.hpp"
+#include "../include/resources.hpp"
 
 #include "../include/ImGuiFileDialog.h"
 #include "../include/imgui-SFML.h"
 #include "../include/imgui.h"
 
-#include "../include/map.hpp"
-#include "../include/resources.hpp"
-
 #include <SFML/Graphics.hpp>
 
 void Editor::init(sf::RenderWindow &window)
 {
+    currentLayer = Map::LAYER_WALLS;
     view = window.getView();
     cell.setFillColor(sf::Color::Green);
 }
@@ -129,11 +129,12 @@ void Editor::run(sf::RenderWindow &window, Map &map)
 
         if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
         {
-            map.setMapCell(mapPos.x, mapPos.y,
+            map.setMapCell(mapPos.x, mapPos.y, currentLayer,
                         sf::Keyboard::isKeyPressed(sf::Keyboard::LShift) ? 0 : textureNumber + 1);
         }
     }
 
+    map.draw(window, currentLayer);
     window.setView(view);
 }
 
