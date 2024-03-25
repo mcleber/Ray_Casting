@@ -48,7 +48,6 @@ int main()
 
     // Creates the Map object and load edited map
     Map map {48.0f};
-    map.load("test.map");
 
     // Load Wall Textures
     if (!Resources::wallTexture.loadFromFile("./image/textures.png"))

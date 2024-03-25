@@ -18,6 +18,8 @@ class Editor
 
         void handleEvent(const sf::Event &event);
 
+        std::string savedFileName;
+
     private:
         sf::RectangleShape cell;
         bool isFirstMouse{}; // Capture the mouse.

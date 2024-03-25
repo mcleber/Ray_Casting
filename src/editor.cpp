@@ -6,6 +6,7 @@
 
 #include "../include/editor.hpp"
 
+#include "../include/ImGuiFileDialog.h"
 #include "../include/imgui-SFML.h"
 #include "../include/imgui.h"
 
@@ -28,9 +29,26 @@ void Editor::run(sf::RenderWindow &window, Map &map)
     {
         if (ImGui::BeginMenu("File"))
         {
+            if (ImGui::MenuItem("Open"))
+            {
+                ImGuiFileDialog::Instance()->OpenDialog("OpenDialog", "Open", ".map");
+            }
+
             if (ImGui::MenuItem("Save"))
             {
-                map.save("test.map");
+                if (savedFileName.empty())
+                {
+                    ImGuiFileDialog::Instance()->OpenDialog("SaveDialog", "Save", ".map");
+                }
+                else
+                {
+                    map.save(savedFileName);
+                }
+            }
+
+            if (ImGui::MenuItem("Save As"))
+            {
+                ImGuiFileDialog::Instance()->OpenDialog("SaveDialog", "Save As", ".map");
             }
 
             ImGui::EndMenu();
@@ -38,6 +56,26 @@ void Editor::run(sf::RenderWindow &window, Map &map)
 
         ImGui::EndMainMenuBar();
     } // END ImGui MENU
+
+    if (ImGuiFileDialog::Instance()->Display("SaveDialog"))
+    {
+        if (ImGuiFileDialog::Instance()->IsOk())
+        {
+            savedFileName = ImGuiFileDialog::Instance()->GetFilePathName();
+            map.save(savedFileName);
+        }
+        ImGuiFileDialog::Instance()->Close();
+    }
+
+    if (ImGuiFileDialog::Instance()->Display("OpenDialog"))
+    {
+        if (ImGuiFileDialog::Instance()->IsOk())
+        {
+            savedFileName = ImGuiFileDialog::Instance()->GetFilePathName();
+            map.load(savedFileName);
+        }
+        ImGuiFileDialog::Instance()->Close();
+    }
 
     // ImGui Editing Options
     ImGui::Begin("Editing Options");
