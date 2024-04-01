@@ -11,5 +11,6 @@
 class Resources
 {
     public:
-        static sf::Texture wallTexture;
+        static sf::Image texturesImage;
+        static sf::Texture textures;
 };

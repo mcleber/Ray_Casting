@@ -79,18 +79,43 @@ void Editor::run(sf::RenderWindow &window, Map &map)
 
     // ImGui Editing Options
     ImGui::Begin("Editing Options");
+    ImGui::Text("Layer");
+    if (ImGui::BeginCombo("##layer", Map::LAYER_NAMES[currentLayer]))
+    {
+        for (size_t i = 0; i < Map::NUM_LAYERS; i++)
+        {
+            if (ImGui::Selectable(Map::LAYER_NAMES[i], currentLayer == i))
+            {
+                currentLayer = i;
+            }
+        }
+
+        ImGui::EndCombo();
+    }
+
     ImGui::Text("Texture No.: "); // Texture Number
     ImGui::InputInt("##tex_no", &textureNumber);
 
-    int textureSize = Resources::wallTexture.getSize().y;
+    int textureSize = Resources::textures.getSize().y;
     ImGui::Text("Preview: ");
     ImGui::Image(
         sf::Sprite
         {
-            Resources::wallTexture,
+            Resources::textures,
             sf::IntRect(textureNumber * textureSize, 0, textureSize, textureSize),
         },
         sf::Vector2f(100.0f, 100.0f));
+
+    if (ImGui::Button("Fill"))
+    {
+        map.fill(currentLayer, textureNumber + 1);
+    }
+
+    ImGui::SameLine();
+    if (ImGui::Button("Clear"))
+    {
+        map.fill(currentLayer, 0);
+    }
 
     ImGui::End(); //END ImGUI Editing Options
 

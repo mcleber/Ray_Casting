@@ -50,10 +50,11 @@ int main()
     Map map {48.0f};
 
     // Load Wall Textures
-    if (!Resources::wallTexture.loadFromFile("./image/textures.png"))
+    if (!Resources::texturesImage.loadFromFile("./image/textures.png"))
     {
         std::cerr << "Failed to load textures.png" << std::endl;
     }
+    Resources::textures.loadFromImage(Resources::texturesImage);
 
     // Creates the Player object
     Player player;

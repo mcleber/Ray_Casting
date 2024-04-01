@@ -8,4 +8,5 @@
 
 #include <SFML/Graphics.hpp>
 
-sf::Texture Resources::wallTexture{};
+sf::Image Resources::texturesImage{};
+sf::Texture Resources::textures{};
