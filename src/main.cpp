@@ -25,7 +25,7 @@
 #include "../include/resources.hpp"
 
 
-int main()
+int main(int argc, const char **argv)
 {
     // Initial window settings
     sf::RenderWindow window(sf::VideoMode(SCREEN_W, SCREEN_H), "Ray Casting - 1.0",
@@ -33,21 +33,18 @@ int main()
 
     window.setVerticalSyncEnabled(true); // limits the frame rate to 60 fps
 
-    // Check ImGUI- SFML
-    if (!ImGui::SFML::Init(window))
-    {
-        std::cerr << "Failed to init ImGui" << std::endl;
-        return 1;
-    }
-
     // Adjust window position when running
     window.setPosition(sf::Vector2i(0, 0));
 
     // Speed control (in fps)
     //window.setFramerateLimit(60);
 
-    // Creates the Map object and load edited map
-    Map map {48.0f};
+    // Check ImGUI- SFML
+    if (!ImGui::SFML::Init(window))
+    {
+        std::cerr << "Failed to init ImGui" << std::endl;
+        return 1;
+    }
 
     // Load Wall Textures
     if (!Resources::texturesImage.loadFromFile("./image/textures.png"))
@@ -66,6 +63,14 @@ int main()
     // Map Editor
     Editor editor{};
     editor.init(window);
+
+    // Creates the Map object and load edited map
+    Map map {48.0f};
+    if (argc > 1)
+    {
+        editor.savedFileName = argv[1];
+        map.load(editor.savedFileName);
+    }
 
     // Game Editor
     enum class State { Editor, Game} state = State::Game;

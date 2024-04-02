@@ -35,6 +35,9 @@ public:
     int getMapCell(int x, int y, int layer) const;
     void setMapCell(int x, int y, int layer, int value);
     void fill(int layer, int value);
+    size_t getWidth();
+    size_t getHeight();
+    void resize(size_t width, int height);
 
     void draw(sf::RenderTarget &target, int layer) const;
     void load(const std::filesystem::path &path);

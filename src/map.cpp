@@ -148,3 +148,22 @@ void Map::fill(int layer, int value)
         }
     }
 }
+
+size_t Map::getWidth()
+{
+    return grid[0].size();
+}
+
+size_t Map::getHeight()
+{
+    return grid.size();
+}
+
+void Map::resize(size_t width, int height)
+{
+    grid.resize(height);
+    for (auto &column : grid)
+    {
+        column.resize(width);
+    }
+}

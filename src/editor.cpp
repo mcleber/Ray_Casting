@@ -117,7 +117,38 @@ void Editor::run(sf::RenderWindow &window, Map &map)
         map.fill(currentLayer, 0);
     }
 
-    ImGui::End(); //END ImGUI Editing Options
+    static int newSize[2];
+    if (ImGui::Button("Resize"))
+    {
+        newSize[0] = map.getWidth();
+        newSize[1] = map.getHeight();
+        ImGui::OpenPopup("Resize");
+    }
+
+    if (ImGui::BeginPopupModal("Resize"))
+    {
+        ImGui::Text("New Size:");
+        ImGui::InputInt2("##newSize", newSize);
+        newSize[0] = std::max(0, newSize[0]);
+        newSize[1] = std::max(0, newSize[1]);
+
+        if (ImGui::Button("OK"))
+        {
+                        //width     height
+            map.resize(newSize[0], newSize[1]);
+            ImGui::CloseCurrentPopup();
+        }
+
+        ImGui::SameLine();
+        if (ImGui::Button("Cancel"))
+        {
+            ImGui::CloseCurrentPopup();
+        }
+
+        ImGui::EndPopup();
+    }
+
+    ImGui::End();
 
     sf::Vector2i mousePos = sf::Mouse::getPosition(window);
 

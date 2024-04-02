@@ -13,6 +13,9 @@ LIBS = -lsfml-graphics -lsfml-window -lsfml-system -lGL
 # Name of the executable
 EXECUTABLE = raycasting
 
+# ARGS
+ARGS = test.map
+
 # Define the source files
 #SOURCES = ./src/main.cpp ./src/map.cpp
 SOURCES = ./src/*.cpp
@@ -43,7 +46,7 @@ $(EXECUTABLE): $(SOURCES)
 	$(CXX) $(CXXFLAGS) $(SOURCES) $(LIBS) -o build/$(EXECUTABLE)
 	@echo "-----------------------------------"
 	@echo "Running the executable..."
-	./build/$(EXECUTABLE)
+	./build/$(EXECUTABLE) $(ARGS)
 	@echo "Done."
 
 # For debug
