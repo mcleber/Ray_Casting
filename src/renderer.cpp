@@ -37,7 +37,7 @@ void Renderer::init()
 
 }
 
-void Renderer::draw3DView(sf::RenderTarget &target, const Player &player, const Map &map)
+void Renderer::draw3DView(sf::RenderTarget &target, const Player &player, const Map &map, const std::vector<Sprite> &sprites)
 {
     float radians = player.angle * PI / 180.0f;
     sf::Vector2f directions{std::cos(radians), std::sin(radians)};
@@ -211,10 +211,47 @@ void Renderer::draw3DView(sf::RenderTarget &target, const Player &player, const 
                             sf::Vector2f(textureX + (hit - 1) * textureSize, 0.0f)));
             walls.append(sf::Vertex(sf::Vector2f((float)i, wallEnd), color,
                             sf::Vector2f(textureX + (hit - 1) * textureSize, textureSize)));
+
+            zBuffer[i] = perpWallDist;
         }
     }
 
-    sf::RenderStates states{&Resources::textures};
-    target.draw(walls, states);
+    target.draw(walls, {&Resources::textures});
 
+    sf::VertexArray spriteColumns {sf::Lines};
+    for (const auto &sprite : sprites)
+    {
+        sf::Vector2f spritePos = sprite.position - player.position;
+
+        // Inverse Camera Matrix:
+        // det = plane.x * dir.y - plane.y * dir.x
+        // [ plane.x dir.x ] - 1 = 1 / det * [ dir.y       -dir.x  ]
+        // [ plane.y dir.y ]                 [ -plane.y    plane.x ]
+        // Transformed position:
+        // 1 / det * [ dir.y       -dir.x  ][x] = 1 / det * [ dir.y * x    - dir.x * y   ]
+        //           [ -plane.y    plane.x ][y] =           [ -plane.y * x + plane.x * y ]
+
+        float invDet = 1.0f / (plane.x * directions.y - plane.y * directions.x);
+        sf::Vector2f transformed{
+            invDet * (directions.y * spritePos.x - directions.x * spritePos.y),
+            invDet * (-plane.y * spritePos.x + plane.x * spritePos.y),
+        };
+
+        int screenX = SCREEN_W / 2 * (1 + transformed.x / transformed.y);
+        int spriteSize = std::abs(SCREEN_H / transformed.y);
+        int drawStart = std::max(-spriteSize / 2 + screenX, 0); // Center value of sprite
+        int drawEnd = std::min(spriteSize / 2 + screenX, (int)SCREEN_W - 1);
+
+        for (int i = drawStart; i < drawEnd; i++)
+        {
+            if (transformed.y > 0.0f && transformed.y < zBuffer[i])
+            {
+                spriteColumns.append(sf::Vertex({(float)i, -spriteSize / 2.0f + SCREEN_H / 2.0f}));
+                spriteColumns.append(sf::Vertex({(float)i, spriteSize / 2.0f + SCREEN_H / 2.0f}));
+            }
+
+        }
+    }
+
+    target.draw(spriteColumns);
 }

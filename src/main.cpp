@@ -72,6 +72,11 @@ int main(int argc, const char **argv)
         map.load(editor.savedFileName);
     }
 
+    // Sprites
+    std::vector<Sprite> sprites = {
+        {{2.5f, 2.5f}},
+    };
+
     // Game Editor
     enum class State { Editor, Game} state = State::Game;
 
@@ -109,7 +114,7 @@ int main(int argc, const char **argv)
         {
             window.setView(window.getDefaultView());
             player.update(deltaTime.asSeconds(), map);
-            renderer.draw3DView(window, player, map);
+            renderer.draw3DView(window, player, map, sprites);
         }
         else
         {
