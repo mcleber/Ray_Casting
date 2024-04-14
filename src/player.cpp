@@ -26,7 +26,7 @@ void Player::draw(sf::RenderTarget &target)
     target.draw(circle);
 }
 
-void Player::update(float deltaTime)
+void Player::update(float deltaTime, const Map &map)
 {
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
     {
@@ -38,11 +38,31 @@ void Player::update(float deltaTime)
         angle += TURN_SPEED * deltaTime;
     }
 
+    float radians = angle * PI / 180.0f;
+    sf::Vector2f move {};
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
     {
-        float radians = angle * PI / 180.0f;
+        move.x += cos(radians);
+        move.y += sin(radians);
+    }
 
-        position.x += cos(radians) * MOVE_SPEED * deltaTime;
-        position.y += sin(radians) * MOVE_SPEED * deltaTime;
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
+    {
+        move.x -= cos(radians);
+        move.y -= sin(radians);
+    }
+
+    // Collision
+    float xOffset = move.x > 0.0f ? PLAYER_SIZE : -PLAYER_SIZE;
+    float yOffset = move.y > 0.0f ? PLAYER_SIZE : -PLAYER_SIZE;
+    move *= MOVE_SPEED * deltaTime;
+    if (map.getMapCell(position.x + move.x + xOffset, position.y, Map::LAYER_WALLS) == 0)
+    {
+        position.x += move.x;
+    }
+
+    if (map.getMapCell(position.x, position.y + move.y + yOffset, Map::LAYER_WALLS) == 0)
+    {
+        position.y += move.y;
     }
 }

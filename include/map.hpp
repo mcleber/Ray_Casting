@@ -29,9 +29,8 @@ public:
         "Ceiling",
     };
 
-    Map(float cellSize);
+    Map() = default;
 
-    float getCellSize() const;
     int getMapCell(int x, int y, int layer) const;
     void setMapCell(int x, int y, int layer, int value);
     void fill(int layer, int value);
@@ -39,11 +38,11 @@ public:
     size_t getHeight();
     void resize(size_t width, int height);
 
-    void draw(sf::RenderTarget &target, int layer) const;
+    void draw(sf::RenderTarget &target, float cellSize, int layer) const;
     void load(const std::filesystem::path &path);
     void save(const std::filesystem::path &path) const;
 
 private:
     std::vector<std::vector<std::array<int, NUM_LAYERS>>> grid;
-    float cellSize;
+
 };

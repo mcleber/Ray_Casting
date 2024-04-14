@@ -7,6 +7,8 @@
 
 #pragma once
 
+#include "map.hpp"
+
 #include <SFML/Graphics.hpp>
 
 class Player
@@ -14,11 +16,8 @@ class Player
 public:
     void draw(sf::RenderTarget &target);
 
-    void update(float deltaTime);
+    void update(float deltaTime, const Map &map);
 
     sf::Vector2f position;
     float angle;
-
-private:
-
 };

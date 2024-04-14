@@ -4,22 +4,18 @@
  * @brief   Creates the grid for the map.
 */
 
-#include "../include/map.hpp"
-#include "../include/resources.hpp"
-
 #include <iostream>
 #include <cstddef>
 #include <fstream>
 #include <ios>
 
+#include "../include/map.hpp"
+#include "../include/resources.hpp"
+
 #include <SFML/Graphics.hpp>
 
-
-Map::Map(float cellSize)
-    : cellSize(cellSize), grid() {};
-
 // Create the map grid
-void Map::draw(sf::RenderTarget &target, int layer) const
+void Map::draw(sf::RenderTarget &target, float cellSize, int layer) const
 {
     if (grid.empty())
     {
@@ -55,10 +51,6 @@ void Map::draw(sf::RenderTarget &target, int layer) const
     }
 }
 
-float Map::getCellSize() const
-{
-    return cellSize;
-}
 
 int Map::getMapCell(int x, int y, int layer) const
 {

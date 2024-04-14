@@ -42,7 +42,7 @@ void Renderer::draw3DView(sf::RenderTarget &target, const Player &player, const 
     float radians = player.angle * PI / 180.0f;
     sf::Vector2f directions{std::cos(radians), std::sin(radians)};
     sf::Vector2f plane{-directions.y, directions.x * 0.66f}; // plane camera
-    sf::Vector2f position = player.position / map.getCellSize();
+    sf::Vector2f position = player.position;
 
     // Sky
     int xOffset = SCREEN_W / PLAYER_TURN_SPEED * player.angle;

@@ -55,7 +55,7 @@ int main(int argc, const char **argv)
 
     // Creates the Player object
     Player player;
-    player.position = sf::Vector2f(50, 50);
+    player.position = sf::Vector2f(1.f, 1.2f);
 
     Renderer renderer;
     renderer.init();
@@ -65,7 +65,7 @@ int main(int argc, const char **argv)
     editor.init(window);
 
     // Creates the Map object and load edited map
-    Map map {48.0f};
+    Map map {};
     if (argc > 1)
     {
         editor.savedFileName = argv[1];
@@ -108,7 +108,7 @@ int main(int argc, const char **argv)
         if (state == State::Game)
         {
             window.setView(window.getDefaultView());
-            player.update(deltaTime.asSeconds());
+            player.update(deltaTime.asSeconds(), map);
             renderer.draw3DView(window, player, map);
         }
         else

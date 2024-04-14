@@ -8,6 +8,7 @@
 
 #include <SFML/Graphics.hpp>
 
+#include "../include/constants.hpp"
 #include "map.hpp"
 
 class Editor
