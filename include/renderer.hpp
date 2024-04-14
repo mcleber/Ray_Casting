@@ -18,7 +18,7 @@ class Renderer
 {
 public:
     void init();
-    void draw3DView(sf::RenderTarget &target, const Player &player, const Map &map, const std::vector<Sprite> &sprites);
+    void draw3DView(sf::RenderTarget &target, const Player &player, const Map &map, std::vector<Sprite> &sprites);
 
 private:
     sf::Texture skyTexture;

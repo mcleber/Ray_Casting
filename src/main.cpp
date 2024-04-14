@@ -46,12 +46,18 @@ int main(int argc, const char **argv)
         return 1;
     }
 
-    // Load Wall Textures
+    // Load Textures
     if (!Resources::texturesImage.loadFromFile("./image/textures.png"))
     {
         std::cerr << "Failed to load textures.png" << std::endl;
     }
     Resources::textures.loadFromImage(Resources::texturesImage);
+
+    // Load Sprites
+    if (!Resources::sprites.loadFromFile("./image/sprites.png"))
+    {
+        std::cerr << "Failed to load sprites.png" << std::endl;
+    }
 
     // Creates the Player object
     Player player;
@@ -72,9 +78,10 @@ int main(int argc, const char **argv)
         map.load(editor.savedFileName);
     }
 
-    // Sprites
+    // Sprites Position (barrel, pillar, celling lamp)
     std::vector<Sprite> sprites = {
-        {{2.5f, 2.5f}},
+        {{4.5f, 6.5f}, 0},
+        {{4.5f, 9.5f}, 1},
     };
 
     // Game Editor

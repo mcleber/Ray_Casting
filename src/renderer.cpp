@@ -37,7 +37,7 @@ void Renderer::init()
 
 }
 
-void Renderer::draw3DView(sf::RenderTarget &target, const Player &player, const Map &map, const std::vector<Sprite> &sprites)
+void Renderer::draw3DView(sf::RenderTarget &target, const Player &player, const Map &map, std::vector<Sprite> &sprites)
 {
     float radians = player.angle * PI / 180.0f;
     sf::Vector2f directions{std::cos(radians), std::sin(radians)};
@@ -218,6 +218,17 @@ void Renderer::draw3DView(sf::RenderTarget &target, const Player &player, const 
 
     target.draw(walls, {&Resources::textures});
 
+    auto getDistance = [player](const Sprite &sprite)
+    {
+        return std::pow(player.position.x - sprite.position.x, 2) + std::pow(player.position.y - sprite.position.y, 2);
+    };
+
+    std::sort(sprites.begin(), sprites.end(), [getDistance](const Sprite &a, const Sprite &b)
+    {
+        return getDistance(a) > getDistance(b);
+    });
+
+    // Draw sprites
     sf::VertexArray spriteColumns {sf::Lines};
     for (const auto &sprite : sprites)
     {
@@ -239,19 +250,23 @@ void Renderer::draw3DView(sf::RenderTarget &target, const Player &player, const 
 
         int screenX = SCREEN_W / 2 * (1 + transformed.x / transformed.y);
         int spriteSize = std::abs(SCREEN_H / transformed.y);
-        int drawStart = std::max(-spriteSize / 2 + screenX, 0); // Center value of sprite
-        int drawEnd = std::min(spriteSize / 2 + screenX, (int)SCREEN_W - 1);
+        int drawStart = -spriteSize / 2 + screenX; // Center value of sprite
+        int drawEnd = spriteSize / 2 + screenX;
 
-        for (int i = drawStart; i < drawEnd; i++)
+        for (int i = std::max(drawStart, 0); i < std::min(drawEnd, (int)SCREEN_W - 1); i++)
         {
             if (transformed.y > 0.0f && transformed.y < zBuffer[i])
             {
-                spriteColumns.append(sf::Vertex({(float)i, -spriteSize / 2.0f + SCREEN_H / 2.0f}));
-                spriteColumns.append(sf::Vertex({(float)i, spriteSize / 2.0f + SCREEN_H / 2.0f}));
+                float textureSize = Resources::sprites.getSize().y;
+                float texX = sprite.texture * textureSize + (i - drawStart) * textureSize / spriteSize;
+
+                spriteColumns.append(sf::Vertex({(float)i, -spriteSize / 2.0f + SCREEN_H / 2.0f}, {texX, 0}));
+                spriteColumns.append(sf::Vertex({(float)i, spriteSize / 2.0f + SCREEN_H / 2.0f}, {texX, textureSize}));
+
             }
-
         }
-    }
 
-    target.draw(spriteColumns);
+        target.draw(spriteColumns, {&Resources::sprites});
+
+    }
 }
